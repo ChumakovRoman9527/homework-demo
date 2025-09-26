@@ -15,15 +15,18 @@ func main() {
 	var wg sync.WaitGroup
 	for i := 1; i < 10; i++ {
 		wg.Add(1)
-		go getHttpCode(i, &wg)
+		go func() {
+			getHttpCode(i)
+			wg.Done()
+		}()
 
 	}
 	wg.Wait()
 	fmt.Println(time.Since(t))
 }
 
-func getHttpCode(i int, wg *sync.WaitGroup) int64 {
-	defer wg.Done()
+func getHttpCode(i int) int64 {
+
 	t := time.Now()
 	var curr_t int64
 	fmt.Println("Начало запроса - ", i)
