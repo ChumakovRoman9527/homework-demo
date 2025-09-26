@@ -16,14 +16,14 @@ func main() {
 	for i := 1; i < 10; i++ {
 		// curr_t = 0
 		// curr_t =
-		go getStatusCode(i)
+		go getHttpCode(i)
 		// all_t = all_t + float64(curr_t)
 	}
 	time.Sleep(time.Second)
 	fmt.Println(time.Since(t))
 }
 
-func getStatusCode(i int) int64 {
+func getHttpCode(i int) int64 {
 	t := time.Now()
 	var curr_t int64
 	fmt.Println("Начало запроса - ", i)
