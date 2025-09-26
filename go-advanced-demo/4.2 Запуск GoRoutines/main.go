@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -11,19 +12,18 @@ import (
 
 func main() {
 	t := time.Now()
-	// all_t := 0.00
-	// curr_t := 0
+	var wg sync.WaitGroup
 	for i := 1; i < 10; i++ {
-		// curr_t = 0
-		// curr_t =
-		go getHttpCode(i)
-		// all_t = all_t + float64(curr_t)
+		wg.Add(1)
+		go getHttpCode(i, &wg)
+
 	}
-	time.Sleep(time.Second)
+	wg.Wait()
 	fmt.Println(time.Since(t))
 }
 
-func getHttpCode(i int) int64 {
+func getHttpCode(i int, wg *sync.WaitGroup) int64 {
+	defer wg.Done()
 	t := time.Now()
 	var curr_t int64
 	fmt.Println("Начало запроса - ", i)
