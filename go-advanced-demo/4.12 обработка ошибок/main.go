@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-func ping(url string, RespChan chan int, ErrChan chan error) {
-	fmt.Println("Начали ", url)
+func ping(url string, RespChan chan string, ErrChan chan error) {
+	// fmt.Println("Начали ", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		ErrChan <- err
 		return
 	}
-	RespChan <- resp.StatusCode
+	RespChan <- fmt.Sprintf("%s -> %d", url, resp.StatusCode)
 	// fmt.Printf("Закончили %s\n", url)
 }
 
@@ -26,20 +26,23 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	urlSlice := strings.Split(string(file), "\n")
+	urlSlice := strings.Split(string(file), "\r\n")
 
-	respChan := make(chan int)
+	respChan := make(chan string)
 	errChan := make(chan error)
 
 	for _, url_ := range urlSlice {
 		go ping(url_, respChan, errChan)
 	}
 
-	for i := 0; i < len(urlSlice); i++ {
-		res := <-respChan
-		errRes := <-errChan
-		fmt.Println("ОК  \n", res)
-		fmt.Println("Ошибка !!! \n", errRes)
+	for range urlSlice {
+		select {
+		case errRes := <-errChan:
+			fmt.Println(" Ошибка !!! ", errRes)
+		case res := <-respChan:
+			fmt.Println(" ОК ", res)
+		}
+
 	}
 
 }

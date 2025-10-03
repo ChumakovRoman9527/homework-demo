@@ -1,5 +1,9 @@
 http://google.com
-httы://tiktok.com
+http://youtube.com
+http://facebook.com
+http://tiktok.com
+http://instagram.com
+http://twitter.com
 http://wikipedia.org
 http://yandex.ru
 http://vk.com
@@ -8,8 +12,8 @@ http://mail.ru
 http://rambler.ru
 http://avito.ru
 http://hh.ru
-http://aliexpress.ru
-http://wildberries.ru
+httd://aliexpress.ru
+http://///wildberries.ru
 http://sberbank.ru
 http://market.yandex.ru
 http://sberrus.market
