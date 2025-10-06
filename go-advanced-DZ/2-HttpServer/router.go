@@ -15,6 +15,6 @@ func NewHelloHandler(router *http.ServeMux) {
 
 func (handler *HomeWorkHandler) getRND() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(internal.GetRND())
+		fmt.Fprintf(w, "%d", internal.GetRND())
 	}
 }
