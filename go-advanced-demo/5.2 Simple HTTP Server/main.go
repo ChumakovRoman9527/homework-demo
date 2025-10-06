@@ -5,12 +5,17 @@ import (
 	"net/http"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hello")
-}
-
 func main() {
-	http.HandleFunc("/hello", hello)
+	router := http.NewServeMux()
+	NewHelloHandler(router)
+
+	server := http.Server{
+		Addr:    ":8081",
+		Handler: router,
+	}
+
 	fmt.Println("Server is listening on port 8081")
-	http.ListenAndServe(":8081", nil)
+	//http.ListenAndServe(":8081", nil)
+	server.ListenAndServe()
+
 }
