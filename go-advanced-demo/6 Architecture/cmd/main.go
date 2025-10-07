@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
+	"5.2-SimpleHTTPServer/configs"
 	"5.2-SimpleHTTPServer/internal/hello"
 )
 
 func main() {
+
+	conf := configs.LoadConfig()
+
 	router := http.NewServeMux()
 	hello.NewHelloHandler(router)
 
