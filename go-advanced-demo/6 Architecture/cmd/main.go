@@ -2,6 +2,7 @@ package main
 
 import (
 	// "6-Architecture/configs"
+	"6-Architecture/configs"
 	"6-Architecture/internal/auth"
 	"fmt"
 	"log"
@@ -10,13 +11,15 @@ import (
 
 func main() {
 
-	// _ := configs.LoadConfig()
+	conf := configs.LoadConfig()
 
 	// router := http.NewServeMux()
 	// hello.NewHelloHandler(router)
 
 	authrouter := http.NewServeMux()
-	auth.NewAuthHandler(authrouter)
+	auth.NewAuthHandler(authrouter, auth.AuthHandlerDeps{
+		Config: conf,
+	})
 
 	// /auth/login
 	// /auth/register
