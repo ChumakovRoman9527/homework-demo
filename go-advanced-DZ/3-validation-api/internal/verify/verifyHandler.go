@@ -1,0 +1,51 @@
+package verify
+
+import (
+	"3-validation-api/configs"
+	"3-validation-api/pkg/res"
+	"strings"
+
+	"fmt"
+	"net/http"
+)
+
+type EmailHandler struct {
+	*configs.EmailValidationConfig
+}
+
+type EmailResponse struct {
+	statusCode int
+	statusText string
+}
+
+func NewVerifyHandler(router *http.ServeMux, deps EmailHandler) {
+	handler := &EmailHandler{
+		EmailValidationConfig: deps.EmailValidationConfig,
+	}
+	router.HandleFunc("POST /verify", handler.VerifyPost())
+	router.HandleFunc("GET /verify/", handler.VerifyGet())
+}
+
+func (handler *EmailHandler) VerifyPost() http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		emailVerifyResponse := SendVerifyEmail(*handler)
+		fmt.Println("Вот тут надо отправлять email !!!!")
+		data := emailVerifyResponse.statusText
+		status := emailVerifyResponse.statusCode
+		res.Json(w, data, status)
+	}
+}
+
+func (handler *EmailHandler) VerifyGet() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		VerifyURI, err := r.URL.Parse(r.RequestURI)
+		if err != nil {
+			fmt.Println("!!Ошибка обработки URI!!")
+		}
+
+		sHash := strings.Split(VerifyURI.String(), "/")[2]
+		fmt.Println(sHash)
+		fmt.Println("VerifyGet !!!!")
+	}
+}
