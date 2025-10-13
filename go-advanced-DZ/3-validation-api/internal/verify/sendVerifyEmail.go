@@ -11,17 +11,20 @@ func SendVerifyEmail(deps EmailHandler) EmailResponse {
 	emailFrom := deps.EmailConfig.Email
 	pass := deps.EmailConfig.Password
 	smtpServ := deps.EmailConfig.Address
+	port := deps.EmailConfig.Port
 
-	smtpServPort := smtpServ + ":9025"
+	smtpServPort := smtpServ + ":" + port
 
+	hashString := Hash_Generate(deps)
+
+	emailString := "<a href=http://localhost:8081/verify/" + hashString + ">Verify !</a>"
 	e := another_email.NewEmail()
 	e.From = "rvch <rvch84@gmail.com>"
 	e.To = []string{"rvch84@gmail.com"}
 	e.Bcc = []string{"rvch84@gmail.com"}
 	e.Cc = []string{"rvch84@gmail.com"}
-	e.Subject = "Awesome Subject"
-	e.Text = []byte("Text Body is, of course, supported!")
-	e.HTML = []byte("<h1>Fancy HTML is supported, too!</h1>")
+	e.Subject = "VerifyEmail"
+	e.HTML = []byte("<h1>Verify the email !!" + emailString + "</h1>")
 	err := e.Send(smtpServPort, smtp.PlainAuth("", emailFrom, pass, smtpServ))
 	if err != nil {
 		return EmailResponse{

@@ -18,6 +18,11 @@ type EmailResponse struct {
 	statusText string
 }
 
+type EmailRecipient struct {
+	RecipientEmail string `json:"RecipientEmail"`
+	RecipientName  string `json:"RecipientName"`
+}
+
 func NewVerifyHandler(router *http.ServeMux, deps EmailHandler) {
 	handler := &EmailHandler{
 		EmailValidationConfig: deps.EmailValidationConfig,
@@ -45,7 +50,12 @@ func (handler *EmailHandler) VerifyGet() http.HandlerFunc {
 		}
 
 		sHash := strings.Split(VerifyURI.String(), "/")[2]
-		fmt.Println(sHash)
-		fmt.Println("VerifyGet !!!!")
+
+		HashValid := Hash_Check(*handler, sHash)
+		data := HashValid.statusText
+		status := HashValid.statusCode
+
+		res.Json(w, data, status)
+
 	}
 }
