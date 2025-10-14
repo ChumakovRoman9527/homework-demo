@@ -18,24 +18,20 @@ type EmailResponse struct {
 	statusText string
 }
 
-type EmailRecipient struct {
-	RecipientEmail string `json:"RecipientEmail"`
-	RecipientName  string `json:"RecipientName"`
-}
-
 func NewVerifyHandler(router *http.ServeMux, deps EmailHandler) {
 	handler := &EmailHandler{
 		EmailValidationConfig: deps.EmailValidationConfig,
 	}
-	router.HandleFunc("POST /verify", handler.VerifyPost())
+	router.HandleFunc("POST /send", handler.VerifyPost())
 	router.HandleFunc("GET /verify/", handler.VerifyGet())
 }
 
 func (handler *EmailHandler) VerifyPost() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		emailVerifyResponse := SendVerifyEmail(*handler)
-		fmt.Println("Вот тут надо отправлять email !!!!")
+		fmt.Println("r.Body = ", r.Body)
+		emailVerifyResponse := SendVerifyEmail(*handler, r)
+		// fmt.Println("Вот тут надо отправлять email !!!!")
 		data := emailVerifyResponse.statusText
 		status := emailVerifyResponse.statusCode
 		res.Json(w, data, status)
