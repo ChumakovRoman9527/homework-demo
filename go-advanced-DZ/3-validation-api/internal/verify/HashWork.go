@@ -1,41 +1,57 @@
 package verify
 
 import (
-	"bytes"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
 )
 
-func Hash_Generate(deps EmailHandler) string {
+func Hash_Generate(email string, deps EmailHandler, _dt string) string {
+	_, _ = time.LoadLocation("Europe/Moscow")
+
+	dt := time.Now().Unix()
+	if _dt != "" {
+		dt, _ = strconv.ParseInt(_dt, 10, 64)
+
+	}
+	// fmt.Println("_dt = ", _dt)
+	// fmt.Println("dt = ", dt)
+
 	// Входные данные
-	data := deps.EmailValidationConfig.EmailConfig.Hash_secret
+	data := fmt.Sprintf("%s|||%d|||%s", email, dt, deps.EmailValidationConfig.EmailConfig.Hash_secret)
 	// Создать новый SHA-256-хэш
-	hash := sha256.New()
-	// Записать данные в хэш
-	data_b := []byte(data)
-	hash.Write(data_b)
-	// Вычислить хэш
-	hashedData := hash.Sum(nil)
-	// fmt.Println("mySecret:", hex.EncodeToString(hashedData))
-	// Преобразовать в шестнадцатеричную строку
-	hexHash := hex.EncodeToString(hashedData)
+	hash := sha256.Sum256([]byte(data))
+
+	hexHash := base64.URLEncoding.EncodeToString([]byte(email + ":" + fmt.Sprintf("%d", dt) + ":" + hex.EncodeToString(hash[:])))
 	// Вывести хэш
 	return hexHash
 }
 
 func Hash_Check(deps EmailHandler, income string) EmailResponse {
 
-	// Вычислить хэш
-	hashedData_s := Hash_Generate(deps)
-	hashedData := []byte(hashedData_s)
+	decoded, _ := base64.URLEncoding.DecodeString(income)
+	parts := strings.Split(string(decoded), ":")
 
-	income_b := []byte(income)
-	// fmt.Println("myhash :", hashedData_s)
-	// fmt.Println("outhash:", income)
+	email := parts[0]
+	dt := parts[1]
+	receivedHash := parts[2]
 
-	// fmt.Println("mySecret 0:", hex.EncodeToString(hashedData))
-	// fmt.Println("mySecret 1:", hex.EncodeToString(income_b))
-	if !bytes.Equal(hashedData, income_b) {
+	expectedHash_URL := Hash_Generate(email, deps, dt)
+
+	expecteddecoded, _ := base64.URLEncoding.DecodeString(expectedHash_URL)
+	expectedparts := strings.Split(string(expecteddecoded), ":")
+	expectedHash := expectedparts[2]
+
+	// fmt.Println("email=", email)
+	// fmt.Println("dt=", dt)
+	// fmt.Println("receivedHash=", receivedHash)
+	// fmt.Println("expectedHash=", expectedHash)
+
+	if receivedHash != expectedHash {
 
 		return EmailResponse{
 			statusCode: 500,

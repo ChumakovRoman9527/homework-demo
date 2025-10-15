@@ -37,14 +37,14 @@ func SendVerifyEmail(deps EmailHandler, r *http.Request) EmailResponse {
 
 	smtpServPort := smtpServ + ":" + port
 
-	hashString := Hash_Generate(deps)
+	hashString := Hash_Generate(t.RecipientEmail, deps, "")
 
 	_, err = time.LoadLocation("Europe/Moscow")
 	if err != nil {
 		fmt.Println("Не удачная попытка установки временной зоны ! ->", err.Error())
 
 	}
-	fmt.Println(time.Now().Local().String())
+	// fmt.Println(time.Now().Local().String())
 
 	emailString := "<a href=http://localhost:8081/verify/" + hashString + ">Verify !</a>"
 	e := another_email.NewEmail()
