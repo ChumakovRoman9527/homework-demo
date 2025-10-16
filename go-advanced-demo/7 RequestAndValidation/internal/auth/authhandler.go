@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"regexp"
 )
 
 type authHandler struct {
@@ -45,8 +44,8 @@ func (handler *authHandler) Login() http.HandlerFunc {
 			}
 			return
 		}
-		reg, _ := regexp.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\._%+\-]+\.[A-Za-z]{2,}`)
-		if !reg.MatchString(payload.Email) {
+		match, _ := MatchString.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\._%+\-]+\.[A-Za-z]{2,}`, payload.Email)
+		if !match {
 			res.Json(w, "e-mail is wrong !!!", http.StatusBadRequest)
 			return
 		}
