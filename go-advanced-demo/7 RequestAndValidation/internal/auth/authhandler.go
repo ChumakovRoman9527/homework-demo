@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/mail"
 )
 
 type authHandler struct {
@@ -44,12 +45,17 @@ func (handler *authHandler) Login() http.HandlerFunc {
 			}
 			return
 		}
-		match, _ := MatchString.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\._%+\-]+\.[A-Za-z]{2,}`, payload.Email)
-		if !match {
+		// match, _ := MatchString.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\._%+\-]+\.[A-Za-z]{2,}`, payload.Email)
+		// if !match {
+		// 	res.Json(w, "e-mail is wrong !!!", http.StatusBadRequest)
+		// 	return
+		// }
+		mailAddress, err := mail.ParseAddress(payload.Email)
+		if err != nil {
 			res.Json(w, "e-mail is wrong !!!", http.StatusBadRequest)
 			return
 		}
-		fmt.Println("r.Body:", payload)
+		fmt.Println("mailAddress:", mailAddress)
 
 		data := LoginResponse{
 			TOKEN: "9999", //handler.Config.Auth.Secret,
