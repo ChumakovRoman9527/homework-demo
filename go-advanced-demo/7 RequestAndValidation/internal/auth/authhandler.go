@@ -6,7 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/mail"
+
+	"github.com/go-playground/validator"
 )
 
 type authHandler struct {
@@ -33,30 +34,12 @@ func (handler *authHandler) Login() http.HandlerFunc {
 			res.Json(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		if payload.Email == "" || payload.Password == "" {
-			if payload.Email == "" && payload.Password != "" {
-				res.Json(w, "e-mail required", http.StatusBadRequest)
-			}
-			if payload.Email != "" && payload.Password == "" {
-				res.Json(w, "password required", http.StatusBadRequest)
-			}
-			if payload.Email == "" && payload.Password == "" {
-				res.Json(w, "password and email required", http.StatusBadRequest)
-			}
-			return
-		}
-		// match, _ := MatchString.Compile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\._%+\-]+\.[A-Za-z]{2,}`, payload.Email)
-		// if !match {
-		// 	res.Json(w, "e-mail is wrong !!!", http.StatusBadRequest)
-		// 	return
-		// }
-		mailAddress, err := mail.ParseAddress(payload.Email)
+		validate := validator.New()
+		err = validate.Struct(payload)
 		if err != nil {
-			res.Json(w, "e-mail is wrong !!!", http.StatusBadRequest)
+			res.Json(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		fmt.Println("mailAddress:", mailAddress)
-
 		data := LoginResponse{
 			TOKEN: "9999", //handler.Config.Auth.Secret,
 		}
