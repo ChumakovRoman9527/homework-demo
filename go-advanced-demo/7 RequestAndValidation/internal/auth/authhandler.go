@@ -45,7 +45,7 @@ func (handler *authHandler) Register() http.HandlerFunc {
 		body, _ := req.HandleBody[RegisterRequest](&w, r)
 		fmt.Println(body)
 
-		data := LoginResponse{
+		data := RegisterResponse{
 			TOKEN: "9999", //handler.Config.Auth.Secret,
 		}
 		res.Json(w, data, http.StatusOK)
