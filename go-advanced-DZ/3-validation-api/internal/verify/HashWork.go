@@ -46,11 +46,6 @@ func Hash_Check(deps EmailHandler, income string) EmailResponse {
 	expectedparts := strings.Split(string(expecteddecoded), ":")
 	expectedHash := expectedparts[2]
 
-	// fmt.Println("email=", email)
-	// fmt.Println("dt=", dt)
-	// fmt.Println("receivedHash=", receivedHash)
-	// fmt.Println("expectedHash=", expectedHash)
-
 	if receivedHash != expectedHash {
 
 		return EmailResponse{
