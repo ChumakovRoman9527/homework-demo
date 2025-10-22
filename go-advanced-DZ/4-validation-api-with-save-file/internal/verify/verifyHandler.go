@@ -2,6 +2,7 @@ package verify
 
 import (
 	"4-validation-api-with-save-file/configs"
+	"4-validation-api-with-save-file/pkg/req"
 	"4-validation-api-with-save-file/pkg/res"
 	"strings"
 
@@ -29,7 +30,11 @@ func NewVerifyHandler(router *http.ServeMux, deps EmailHandler) {
 func (handler *EmailHandler) VerifyPost() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		// fmt.Println("r.Body = ", r.Body)
+		body, err := req.HandleBody[EmailHandler](&w, r)
+		if err != nil {
+			return
+		}
+		fmt.Println(body)
 		emailVerifyResponse := SendVerifyEmail(*handler, r)
 		// fmt.Println("Вот тут надо отправлять email !!!!")
 		data := emailVerifyResponse.statusText
