@@ -19,7 +19,7 @@ func SaveVerifyFile(email string, hash_string string) error {
 	if err != nil {
 		return err
 	}
-	nameFile := email + ".json"
+	nameFile := "./FilesForCheck/" + email + ".json"
 	err = os.WriteFile(nameFile, texttofile, 0644)
 	if err != nil {
 		return err
@@ -28,7 +28,7 @@ func SaveVerifyFile(email string, hash_string string) error {
 }
 
 func VerifyEmailFile(email string, hash_string string) (bool, error) {
-	nameFile := email + ".json"
+	nameFile := "./FilesForCheck/" + email + ".json"
 	data, err := os.ReadFile(nameFile)
 	if err != nil {
 		return false, err
@@ -43,8 +43,10 @@ func VerifyEmailFile(email string, hash_string string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	fmt.Println(hash_string)
+	fmt.Println(fileStruct.Hash_string)
 	if hash_string != fileStruct.Hash_string {
-		return true, nil
+		return false, nil
 	}
 
 	return true, nil

@@ -34,14 +34,20 @@ func Hash_Generate(email string, deps EmailHandler, _dt string) string {
 
 func Hash_Check(deps EmailHandler, income string) EmailResponse {
 
-	decoded, _ := base64.URLEncoding.DecodeString(income)
+	decoded, err := base64.URLEncoding.DecodeString(income)
+	if err != nil {
+		return EmailResponse{
+			statusCode: 500,
+			statusText: err.Error(),
+		}
+	}
 	parts := strings.Split(string(decoded), ":")
 
 	email := parts[0]
 	// dt := parts[1]
-	receivedHash := parts[2]
+	// receivedHash := parts[2]
 
-	success, err := files.VerifyEmailFile(email, receivedHash)
+	success, err := files.VerifyEmailFile(email, income)
 	if err != nil {
 		return EmailResponse{
 			statusCode: 500,
