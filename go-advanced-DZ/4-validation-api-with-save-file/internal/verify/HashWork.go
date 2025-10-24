@@ -1,6 +1,7 @@
 package verify
 
 import (
+	"4-validation-api-with-save-file/internal/files"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
@@ -37,16 +38,24 @@ func Hash_Check(deps EmailHandler, income string) EmailResponse {
 	parts := strings.Split(string(decoded), ":")
 
 	email := parts[0]
-	dt := parts[1]
+	// dt := parts[1]
 	receivedHash := parts[2]
 
-	expectedHash_URL := Hash_Generate(email, deps, dt)
+	success, err := files.VerifyEmailFile(email, receivedHash)
+	if err != nil {
+		return EmailResponse{
+			statusCode: 500,
+			statusText: err.Error(),
+		}
+	}
 
-	expecteddecoded, _ := base64.URLEncoding.DecodeString(expectedHash_URL)
-	expectedparts := strings.Split(string(expecteddecoded), ":")
-	expectedHash := expectedparts[2]
+	// expectedHash_URL := Hash_Generate(email, deps, dt)
 
-	if receivedHash != expectedHash {
+	// expecteddecoded, _ := base64.URLEncoding.DecodeString(expectedHash_URL)
+	// expectedparts := strings.Split(string(expecteddecoded), ":")
+	// expectedHash := expectedparts[2]
+
+	if !success {
 
 		return EmailResponse{
 			statusCode: 500,

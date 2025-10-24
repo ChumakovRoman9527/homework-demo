@@ -30,12 +30,13 @@ func NewVerifyHandler(router *http.ServeMux, deps EmailHandler) {
 func (handler *EmailHandler) VerifyPost() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		body, err := req.HandleBody[EmailHandler](&w, r)
+
+		body, err := req.HandleBody[EmailRegister](&w, r)
 		if err != nil {
 			return
 		}
-		fmt.Println(body)
-		emailVerifyResponse := SendVerifyEmail(*handler, r)
+
+		emailVerifyResponse := SendVerifyEmail(*handler, body)
 		// fmt.Println("Вот тут надо отправлять email !!!!")
 		data := emailVerifyResponse.statusText
 		status := emailVerifyResponse.statusCode
