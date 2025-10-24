@@ -42,7 +42,9 @@ func Hash_Check(deps EmailHandler, income string) EmailResponse {
 		}
 	}
 	parts := strings.Split(string(decoded), ":")
-
+	if len(parts) != 3 {
+		return EmailResponse{statusCode: 400, statusText: "Неверный формат hash"}
+	}
 	email := parts[0]
 	// dt := parts[1]
 	// receivedHash := parts[2]
