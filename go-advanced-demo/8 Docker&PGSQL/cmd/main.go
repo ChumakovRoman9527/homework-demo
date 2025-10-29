@@ -4,6 +4,7 @@ import (
 	// "6-Architecture/configs"
 	"8-DockerPGSQL/configs"
 	"8-DockerPGSQL/internal/auth"
+	"8-DockerPGSQL/pkg/db"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,7 +16,7 @@ func main() {
 
 	// router := http.NewServeMux()
 	// hello.NewHelloHandler(router)
-
+	_ = db.NewDb(conf)
 	authrouter := http.NewServeMux()
 	auth.NewAuthHandler(authrouter, auth.AuthHandlerDeps{
 		Config: conf,

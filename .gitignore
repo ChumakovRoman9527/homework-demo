@@ -1,2 +1,3 @@
 *.exe
 .env
+/postgres_data
