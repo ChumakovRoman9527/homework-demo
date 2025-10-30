@@ -5,8 +5,8 @@ services:
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASS}
-      PG_DATA: /data/postgres
+      PG_DATA: /var/lib/postgresql/data/
     volumes:
-      - ./postgres_data:/data/postgres
+      - ./postgres_data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
