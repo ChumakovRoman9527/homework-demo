@@ -1,6 +1,8 @@
 package link
 
 import (
+	"9-CRUD/pkg/req"
+	"9-CRUD/pkg/res"
 	"fmt"
 	"net/http"
 )
@@ -24,6 +26,19 @@ func NewLinkHandler(router *http.ServeMux, deps LinkHandlerDeps) {
 
 func (handler *linkHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := req.HandleBody[LinkCreateRequest](&w, r)
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
+		link := NewLink(body.URL)
+		createdLink, err := handler.LinkRepository.Create(link)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		res.Json(w, createdLink, http.StatusCreated)
 
 	}
 }
