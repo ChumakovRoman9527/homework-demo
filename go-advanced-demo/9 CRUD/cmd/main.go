@@ -17,14 +17,19 @@ func main() {
 
 	// router := http.NewServeMux()
 	// hello.NewHelloHandler(router)
-	_ = db.NewDb(conf)
+	db := db.NewDb(conf)
 	router := http.NewServeMux()
+	//Repositories
+	linkRepository := link.NewLinkRepository(db)
+
 	//Handlers
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config: conf,
 	})
 
-	link.NewLinkHandler(router, link.LinkHandlerDeps{})
+	link.NewLinkHandler(router, link.LinkHandlerDeps{
+		LinkRepository: linkRepository,
+	})
 	// /auth/login
 	// /auth/register
 

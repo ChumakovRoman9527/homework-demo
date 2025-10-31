@@ -6,13 +6,15 @@ import (
 )
 
 type linkHandler struct {
+	LinkRepository *LinkRepository
 }
 
 type LinkHandlerDeps struct {
+	LinkRepository *LinkRepository
 }
 
 func NewLinkHandler(router *http.ServeMux, deps LinkHandlerDeps) {
-	handler := &linkHandler{}
+	handler := &linkHandler{LinkRepository: deps.LinkRepository}
 	router.HandleFunc("POST /link", handler.Create())
 	router.HandleFunc("PATCH /link/{id}", handler.Update())
 	router.HandleFunc("DELETE /link/{id}", handler.Delete())
