@@ -13,12 +13,16 @@ type Link struct {
 }
 
 func NewLink(url string) *Link {
-	return &Link{
-		Url:  url,
-		Hash: RabdStringRunes(6),
+	link := &Link{
+		Url: url,
 	}
+	link.GeneratedHash()
+	return link
 }
 
+func (link *Link) GeneratedHash() {
+	link.Hash = RabdStringRunes(6)
+}
 func getEnglishAlphabet() []rune {
 	var alphabet []rune
 

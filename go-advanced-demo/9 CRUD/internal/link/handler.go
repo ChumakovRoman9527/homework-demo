@@ -31,19 +31,15 @@ func (handler *linkHandler) Create() http.HandlerFunc {
 			fmt.Println(err.Error())
 			return
 		}
+		link := NewLink(body.URL)
+		for {
 
-		var link *Link
-		var hash_exists bool
-		hash_exists = true
-		for hash_exists {
-			link = NewLink(body.URL)
-			hash_exists, err = handler.LinkRepository.CheckByHash(link.Hash)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
+			existedlink, _ := handler.LinkRepository.GetByHash(link.Hash)
+			if existedlink == nil {
+				break
 			}
+			link.GeneratedHash()
 		}
-
 		createdLink, err := handler.LinkRepository.Create(link)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
