@@ -88,9 +88,12 @@ func (handler *linkHandler) Delete() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		link, err := handler.LinkRepository.Delete(&Link{
-			Model: gorm.Model{ID: uint(id)}})
-		res.Json(w, link, 201)
+		err = handler.LinkRepository.Delete(uint(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		res.Json(w, nil, 201)
 	}
 }
 

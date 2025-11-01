@@ -55,10 +55,10 @@ func (repo *LinkRepository) Update(link *Link) (*Link, error) {
 	return link, nil
 }
 
-func (repo *LinkRepository) Delete(link *Link) (*Link, error) {
-	result := repo.DataBase.DB.Clauses(clause.Returning{}).Delete(link)
+func (repo *LinkRepository) Delete(id uint) error {
+	result := repo.DataBase.DB.Delete(&Link{}, id)
 	if result.Error != nil {
-		return nil, result.Error
+		return result.Error
 	}
-	return link, nil
+	return nil
 }
