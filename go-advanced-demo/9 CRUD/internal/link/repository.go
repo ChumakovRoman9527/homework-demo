@@ -1,6 +1,10 @@
 package link
 
-import "9-CRUD/pkg/db"
+import (
+	"9-CRUD/pkg/db"
+
+	"gorm.io/gorm/clause"
+)
 
 type LinkRepositoryDeps struct {
 	DataBase *db.Db
@@ -41,4 +45,20 @@ func (repo *LinkRepository) CheckByHash(hash string) (bool, error) {
 		return false, result.Error
 	}
 	return exists, nil
+}
+
+func (repo *LinkRepository) Update(link *Link) (*Link, error) {
+	result := repo.DataBase.DB.Clauses(clause.Returning{}).Updates(link)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return link, nil
+}
+
+func (repo *LinkRepository) Delete(link *Link) (*Link, error) {
+	result := repo.DataBase.DB.Clauses(clause.Returning{}).Delete(link)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return link, nil
 }
