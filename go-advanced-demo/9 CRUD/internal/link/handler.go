@@ -32,7 +32,18 @@ func (handler *linkHandler) Create() http.HandlerFunc {
 			return
 		}
 
-		link := NewLink(body.URL)
+		var link *Link
+		var hash_exists bool
+		hash_exists = true
+		for hash_exists {
+			link = NewLink(body.URL)
+			hash_exists, err = handler.LinkRepository.CheckByHash(link.Hash)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+
 		createdLink, err := handler.LinkRepository.Create(link)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -58,6 +69,12 @@ func (handler *linkHandler) Delete() http.HandlerFunc {
 
 func (handler *linkHandler) GoTo() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		hash := r.PathValue("hash")
+		link, err := handler.LinkRepository.GetByHash(hash)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		http.Redirect(w, r, link.Url, http.StatusTemporaryRedirect)
 	}
 }
