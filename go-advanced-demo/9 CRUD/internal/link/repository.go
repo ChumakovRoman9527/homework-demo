@@ -47,6 +47,16 @@ func (repo *LinkRepository) CheckByHash(hash string) (bool, error) {
 	return exists, nil
 }
 
+func (repo *LinkRepository) GetByID(id uint) (*Link, error) {
+	var link Link
+	result := repo.DataBase.DB.First(&link, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &link, nil
+}
+
 func (repo *LinkRepository) Update(link *Link) (*Link, error) {
 	result := repo.DataBase.DB.Clauses(clause.Returning{}).Updates(link)
 	if result.Error != nil {
@@ -56,6 +66,7 @@ func (repo *LinkRepository) Update(link *Link) (*Link, error) {
 }
 
 func (repo *LinkRepository) Delete(id uint) error {
+
 	result := repo.DataBase.DB.Delete(&Link{}, id)
 	if result.Error != nil {
 		return result.Error

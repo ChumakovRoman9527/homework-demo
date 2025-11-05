@@ -88,12 +88,17 @@ func (handler *linkHandler) Delete() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		err = handler.LinkRepository.Delete(uint(id))
+		link, err := handler.LinkRepository.GetByID(uint(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		err = handler.LinkRepository.Delete(link.ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		res.Json(w, nil, 201)
+		res.Json(w, nil, 200)
 	}
 }
 
