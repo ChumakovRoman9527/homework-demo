@@ -3,7 +3,6 @@ package product
 import (
 	"9-CRUD_ORDER_API/pkg/req"
 	"9-CRUD_ORDER_API/pkg/res"
-	"fmt"
 	"net/http"
 )
 
@@ -27,7 +26,7 @@ func (handler *productsHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := req.HandleBody[ProductCreateRequest](&w, r)
 		if err != nil {
-			fmt.Println(err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		product := newProduct(*body)
