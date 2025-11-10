@@ -27,3 +27,20 @@ func (repo *ProductRepository) Create(product *Product) (*Product, error) {
 	}
 	return product, nil
 }
+
+func (repo *ProductRepository) Update(product *Product) (*Product, error) {
+	result := repo.DataBase.DB.Clauses(clause.Returning{}).Updates(product)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return product, nil
+}
+
+func (repo *ProductRepository) GetByID(id uint) (*Product, error) {
+	var product Product
+	result := repo.DataBase.First(&product, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &product, nil
+}

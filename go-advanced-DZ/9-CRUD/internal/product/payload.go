@@ -9,8 +9,7 @@ type ProductCreateRequest struct {
 }
 
 type ProductUpdateRequest struct {
-	ID          uint           `json:"Id" validate:"required, number"`
-	Name        string         `json:"Name" validate:"required"`
-	Description string         `json:"Description" validate:"required"`
+	Name        string         `json:"Name"`
+	Description string         `json:"Description"`
 	Images      pq.StringArray `json:"Image" gorm:"type:text[]"`
 }
