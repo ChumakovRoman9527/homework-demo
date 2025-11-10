@@ -19,8 +19,8 @@ func ProductsHandler(router *http.ServeMux, deps ProductHandlerDeps) {
 	handler := &productsHandler{ProductRepository: deps.ProductRepository}
 	router.HandleFunc("POST /product", handler.Create())
 	router.HandleFunc("PATCH /product/{id}", handler.Update())
-	// router.HandleFunc("DELETE /product/{id}", handler.Delete())
-	// router.HandleFunc("GET /{hash}", handler.GoTo())
+	router.HandleFunc("DELETE /product/{id}", handler.Delete())
+	router.HandleFunc("GET /product/{id}", handler.Get())
 }
 
 func (handler *productsHandler) Create() http.HandlerFunc {
@@ -90,6 +90,54 @@ func (handler *productsHandler) Update() http.HandlerFunc {
 			return
 		}
 		res.Json(w, updatedProduct, http.StatusCreated)
+
+	}
+}
+
+func (handler *productsHandler) Delete() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		idString := r.PathValue("id")
+		id, err := strconv.ParseUint(idString, 10, 32)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		_, err = handler.ProductRepository.GetByID(uint(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		err = handler.ProductRepository.Delete(uint(id))
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		res.Json(w, "Продукт удален", http.StatusCreated)
+
+	}
+}
+
+func (handler *productsHandler) Get() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		idString := r.PathValue("id")
+		id, err := strconv.ParseUint(idString, 10, 32)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		Product, err := handler.ProductRepository.GetByID(uint(id))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		res.Json(w, Product, http.StatusCreated)
 
 	}
 }

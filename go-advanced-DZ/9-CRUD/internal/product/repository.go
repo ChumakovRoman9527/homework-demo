@@ -44,3 +44,11 @@ func (repo *ProductRepository) GetByID(id uint) (*Product, error) {
 	}
 	return &product, nil
 }
+
+func (repo *ProductRepository) Delete(id uint) error {
+	result := repo.DataBase.DB.Delete(&Product{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
