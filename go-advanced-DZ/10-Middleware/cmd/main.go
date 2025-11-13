@@ -6,6 +6,7 @@ import (
 	"10-Middleware-order-api/internal/auth"
 	"10-Middleware-order-api/internal/product"
 	"10-Middleware-order-api/pkg/db"
+	"10-Middleware-order-api/pkg/middleware"
 	"fmt"
 	"log"
 	"net/http"
@@ -28,9 +29,14 @@ func main() {
 
 	product.ProductsHandler(router, product.ProductHandlerDeps{ProductRepository: productRepository})
 
+	stack := middleware.Chain(
+		middleware.CORS,
+		middleware.Logging,
+	)
+
 	server := http.Server{
 		Addr:    ":8081",
-		Handler: router,
+		Handler: stack(router),
 	}
 
 	fmt.Println("Server is listening on port 8081")
