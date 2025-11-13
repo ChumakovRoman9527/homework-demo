@@ -1,7 +1,7 @@
 package link
 
 import (
-	"10-Middleware/pkg/db"
+	"11-JWTAUTH/pkg/db"
 
 	"gorm.io/gorm/clause"
 )

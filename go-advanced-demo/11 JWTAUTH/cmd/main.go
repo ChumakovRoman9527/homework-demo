@@ -1,12 +1,11 @@
 package main
 
 import (
-	// "6-Architecture/configs"
-	"10-Middleware/configs"
-	"10-Middleware/internal/auth"
-	"10-Middleware/internal/link"
-	"10-Middleware/pkg/db"
-	"10-Middleware/pkg/middleware"
+	"11-JWTAUTH/configs"
+	"11-JWTAUTH/internal/auth"
+	"11-JWTAUTH/internal/link"
+	"11-JWTAUTH/pkg/db"
+	"11-JWTAUTH/pkg/middleware"
 	"fmt"
 	"log"
 	"net/http"

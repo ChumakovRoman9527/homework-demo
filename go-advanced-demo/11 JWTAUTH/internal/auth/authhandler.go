@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"10-Middleware/configs"
-	"10-Middleware/pkg/req"
-	"10-Middleware/pkg/res"
+	"11-JWTAUTH/configs"
+	"11-JWTAUTH/pkg/req"
+	"11-JWTAUTH/pkg/res"
 	"fmt"
 	"net/http"
 )

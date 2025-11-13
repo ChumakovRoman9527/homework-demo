@@ -1,7 +1,7 @@
 package req
 
 import (
-	"10-Middleware/pkg/res"
+	"11-JWTAUTH/pkg/res"
 	"net/http"
 )
 

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"10-Middleware/configs"
+	"11-JWTAUTH/configs"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

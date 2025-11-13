@@ -1,7 +1,7 @@
 package main
 
 import (
-	"10-Middleware/internal/link"
+	"11-JWTAUTH/internal/link"
 	"os"
 
 	"github.com/joho/godotenv"

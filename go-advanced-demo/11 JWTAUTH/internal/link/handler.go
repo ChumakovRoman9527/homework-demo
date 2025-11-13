@@ -1,9 +1,9 @@
 package link
 
 import (
-	"10-Middleware/pkg/middleware"
-	"10-Middleware/pkg/req"
-	"10-Middleware/pkg/res"
+	"11-JWTAUTH/pkg/middleware"
+	"11-JWTAUTH/pkg/req"
+	"11-JWTAUTH/pkg/res"
 	"fmt"
 	"net/http"
 	"strconv"
