@@ -2,10 +2,10 @@ package main
 
 import (
 	// "6-Architecture/configs"
-	"9-CRUD_ORDER_API/configs"
-	"9-CRUD_ORDER_API/internal/auth"
-	"9-CRUD_ORDER_API/internal/product"
-	"9-CRUD_ORDER_API/pkg/db"
+	"10-Middleware-order-api/configs"
+	"10-Middleware-order-api/internal/auth"
+	"10-Middleware-order-api/internal/product"
+	"10-Middleware-order-api/pkg/db"
 	"fmt"
 	"log"
 	"net/http"

@@ -1,7 +1,7 @@
 package req
 
 import (
-	"9-CRUD_ORDER_API/pkg/res"
+	"10-Middleware-order-api/pkg/res"
 	"net/http"
 )
 

@@ -1,7 +1,7 @@
 package product
 
 import (
-	"9-CRUD_ORDER_API/pkg/db"
+	"10-Middleware-order-api/pkg/db"
 
 	"gorm.io/gorm/clause"
 )

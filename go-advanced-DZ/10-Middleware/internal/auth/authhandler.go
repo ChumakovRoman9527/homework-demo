@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"9-CRUD_ORDER_API/configs"
-	"9-CRUD_ORDER_API/pkg/req"
-	"9-CRUD_ORDER_API/pkg/res"
+	"10-Middleware-order-api/configs"
+	"10-Middleware-order-api/pkg/req"
+	"10-Middleware-order-api/pkg/res"
 	"fmt"
 	"net/http"
 )

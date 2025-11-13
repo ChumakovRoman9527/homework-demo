@@ -1,8 +1,8 @@
 package product
 
 import (
-	"9-CRUD_ORDER_API/pkg/req"
-	"9-CRUD_ORDER_API/pkg/res"
+	"10-Middleware-order-api/pkg/req"
+	"10-Middleware-order-api/pkg/res"
 	"net/http"
 	"strconv"
 )
