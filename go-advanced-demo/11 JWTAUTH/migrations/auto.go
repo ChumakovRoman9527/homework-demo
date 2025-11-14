@@ -2,6 +2,7 @@ package main
 
 import (
 	"11-JWTAUTH/internal/link"
+	"11-JWTAUTH/internal/user"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -10,6 +11,7 @@ import (
 )
 
 func main() {
+
 	err := godotenv.Load(".env")
 	if err != nil {
 		panic(err)
@@ -18,5 +20,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&link.Link{})
+
+	err = db.AutoMigrate(&link.Link{}, &user.User{})
+	if err != nil {
+		panic(err)
+	}
 }
