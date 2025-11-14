@@ -4,7 +4,6 @@ import (
 	"11-JWTAUTH/configs"
 	"11-JWTAUTH/pkg/req"
 	"11-JWTAUTH/pkg/res"
-	"fmt"
 	"net/http"
 )
 
@@ -32,10 +31,14 @@ func (handler *authHandler) Login() http.HandlerFunc {
 
 		body, err := req.HandleBody[LoginRequest](&w, r)
 		if err != nil {
+			res.Json(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		fmt.Println(body)
-
+		_, err = handler.AuthService.Login(body.Email, body.Password)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
 		data := LoginResponse{
 			TOKEN: "9999", //handler.Config.Auth.Secret,
 		}
@@ -47,13 +50,15 @@ func (handler *authHandler) Register() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := req.HandleBody[RegisterRequest](&w, r)
 		if err != nil {
+			res.Json(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		handler.AuthService.Register(body.Email, body.Password, body.Name)
-
-		data := RegisterResponse{
-			TOKEN: "9999", //handler.Config.Auth.Secret,
+		email, err := handler.AuthService.Register(body.Email, body.Password, body.Name)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusBadRequest)
+			return
 		}
-		res.Json(w, data, http.StatusOK)
+
+		res.Json(w, email, http.StatusOK)
 	}
 }
