@@ -7,21 +7,21 @@ import (
 )
 
 type UserRepositoryDeps struct {
-	DataBase *db.Db
+	database *db.Db
 }
 
 type UserRepository struct {
-	DataBase *db.Db
+	database *db.Db
 }
 
 func NewUserRepository(database *db.Db) *UserRepository {
 	return &UserRepository{
-		DataBase: database,
+		database: database,
 	}
 }
 
 func (repo *UserRepository) Create(user *User) (*User, error) {
-	result := repo.DataBase.DB.Clauses(clause.Returning{}).Create(user)
+	result := repo.database.DB.Clauses(clause.Returning{}).Create(user)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -30,7 +30,7 @@ func (repo *UserRepository) Create(user *User) (*User, error) {
 
 func (repo *UserRepository) FindByEmail(email string) (*User, error) {
 	var user User
-	result := repo.DataBase.Where("email =", email).First(&user)
+	result := repo.database.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		return nil, result.Error
 	}

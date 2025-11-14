@@ -4,6 +4,7 @@ import (
 	"11-JWTAUTH/configs"
 	"11-JWTAUTH/internal/auth"
 	"11-JWTAUTH/internal/link"
+	"11-JWTAUTH/internal/user"
 	"11-JWTAUTH/pkg/db"
 	"11-JWTAUTH/pkg/middleware"
 	"fmt"
@@ -21,10 +22,14 @@ func main() {
 	router := http.NewServeMux()
 	//Repositories
 	linkRepository := link.NewLinkRepository(db)
+	userRepository := user.NewUserRepository(db)
+	//Services
+	AuthService := auth.NewAuthService(userRepository)
 
 	//Handlers
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
-		Config: conf,
+		Config:      conf,
+		AuthService: AuthService,
 	})
 
 	link.NewLinkHandler(router, link.LinkHandlerDeps{
