@@ -1,7 +1,7 @@
 package db
 
 import (
-	"10-Middleware-order-api/configs"
+	"5-order-api-auth/configs"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"10-Middleware-order-api/internal/link"
-	"10-Middleware-order-api/internal/product"
+	"5-order-api-auth/internal/link"
+	"5-order-api-auth/internal/product"
 	"os"
 
 	"github.com/joho/godotenv"

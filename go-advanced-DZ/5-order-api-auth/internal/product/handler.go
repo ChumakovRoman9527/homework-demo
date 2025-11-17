@@ -1,9 +1,9 @@
 package product
 
 import (
-	"10-Middleware-order-api/pkg/middleware"
-	"10-Middleware-order-api/pkg/req"
-	"10-Middleware-order-api/pkg/res"
+	"5-order-api-auth/pkg/middleware"
+	"5-order-api-auth/pkg/req"
+	"5-order-api-auth/pkg/res"
 	"net/http"
 	"strconv"
 )

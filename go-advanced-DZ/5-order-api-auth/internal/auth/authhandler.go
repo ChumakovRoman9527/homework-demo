@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"10-Middleware-order-api/configs"
-	"10-Middleware-order-api/pkg/req"
-	"10-Middleware-order-api/pkg/res"
+	"5-order-api-auth/configs"
+	"5-order-api-auth/pkg/req"
+	"5-order-api-auth/pkg/res"
 	"fmt"
 	"net/http"
 )
