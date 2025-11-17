@@ -2,6 +2,7 @@ package auth
 
 import (
 	"11-JWTAUTH/configs"
+	"11-JWTAUTH/pkg/jwt"
 	"11-JWTAUTH/pkg/req"
 	"11-JWTAUTH/pkg/res"
 	"net/http"
@@ -39,8 +40,19 @@ func (handler *authHandler) Login() http.HandlerFunc {
 			res.Json(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
+
+		j := jwt.NewJWT(
+			handler.Auth.Secret,
+		)
+
+		token, err := j.Create(body.Email)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		data := LoginResponse{
-			TOKEN: "9999", //handler.Config.Auth.Secret,
+			TOKEN: token, //handler.Config.Auth.Secret,
 		}
 		res.Json(w, data, http.StatusOK)
 	}
@@ -59,6 +71,20 @@ func (handler *authHandler) Register() http.HandlerFunc {
 			return
 		}
 
-		res.Json(w, email, http.StatusOK)
+		j := jwt.NewJWT(
+			handler.Auth.Secret,
+		)
+
+		token, err := j.Create(email)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		data := RegisterResponse{
+			TOKEN: token, //handler.Config.Auth.Secret,
+		}
+
+		res.Json(w, data, http.StatusOK)
 	}
 }

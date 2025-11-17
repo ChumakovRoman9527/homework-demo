@@ -8,7 +8,7 @@ type JWT struct {
 	Secret string
 }
 
-func newJWT(secret string) *JWT {
+func NewJWT(secret string) *JWT {
 	return &JWT{
 		Secret: secret,
 	}
