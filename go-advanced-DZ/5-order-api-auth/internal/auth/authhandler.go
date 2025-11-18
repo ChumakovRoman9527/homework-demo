@@ -22,6 +22,8 @@ func NewAuthHandler(router *http.ServeMux, deps AuthHandlerDeps) {
 	}
 	router.HandleFunc("POST /auth/register", handler.Register())
 	router.HandleFunc("POST /auth/login", handler.Login())
+	router.HandleFunc("POST /auth/loginphone", handler.LoginPhone())
+	router.HandleFunc("POST /auth/loginSMS", handler.LoginSMS())
 }
 
 func (handler *authHandler) Login() http.HandlerFunc {
