@@ -19,7 +19,7 @@ type RegisterResponse struct {
 }
 
 type LoginPhoneRequest struct {
-	Phone string `json:"phone" validate:"required,numeric,startswith=8,"`
+	Phone string `json:"phone" validate:"required,numeric,startswith=8"`
 }
 
 type LoginPhoneResponse struct {
@@ -31,6 +31,6 @@ type LoginSMSRequest struct {
 	Code string `json:"code" validate:"required,numeric"`
 }
 
-type LoginSMSResonse struct {
+type LoginSMSResponse struct {
 	TOKEN string `json:"token"`
 }

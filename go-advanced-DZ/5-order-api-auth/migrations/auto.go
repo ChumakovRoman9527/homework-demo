@@ -1,6 +1,7 @@
 package main
 
 import (
+	"5-order-api-auth/internal/auth"
 	"5-order-api-auth/internal/link"
 	"5-order-api-auth/internal/product"
 	"os"
@@ -19,7 +20,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&link.Link{}, &product.Product{})
+	err = db.AutoMigrate(&link.Link{}, &product.Product{}, &auth.PhoneAuth{})
 	if err != nil {
 		panic(err)
 	}

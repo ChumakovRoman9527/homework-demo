@@ -26,8 +26,16 @@ func main() {
 	})
 
 	productRepository := product.NewProductRepository(db)
+	phoneAuthRepository := auth.NewPhoneAuthRepository(db)
+	//Services
+	AuthService := auth.NewAuthService(phoneAuthRepository)
 
 	product.ProductsHandler(router, product.ProductHandlerDeps{ProductRepository: productRepository})
+
+	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
+		Config:      conf,
+		AuthService: AuthService,
+	})
 
 	stack := middleware.Chain(
 		middleware.CORS,
