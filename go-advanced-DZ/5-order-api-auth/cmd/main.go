@@ -21,10 +21,6 @@ func main() {
 	db := db.NewDb(conf)
 	router := http.NewServeMux()
 
-	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
-		Config: conf,
-	})
-
 	productRepository := product.NewProductRepository(db)
 	phoneAuthRepository := auth.NewPhoneAuthRepository(db)
 	//Services

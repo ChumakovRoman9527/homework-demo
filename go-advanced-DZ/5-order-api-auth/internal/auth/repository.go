@@ -41,7 +41,7 @@ func (repo *PhoneAuthRepository) GetBySessionCode(sessionId string, code string)
 func (repo *PhoneAuthRepository) DeleteBySessionCode(sessionId string) (*PhoneAuth, error) {
 	var phoneAuth PhoneAuth
 	//db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
-	result := repo.DataBase.Delete(&PhoneAuth{SessionID: sessionId})
+	result := repo.DataBase.Where("session_id = ?", sessionId).Delete(&PhoneAuth{})
 	if result.Error != nil {
 		return nil, result.Error
 	}

@@ -74,10 +74,18 @@ func (handler *authHandler) LoginSMS() http.HandlerFunc {
 			return
 		}
 
+		err = handler.AuthService.ClearOldSession(body.SessionID)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		data := LoginSMSResponse{
 			TOKEN: token,
 		}
+
 		res.Json(w, data, http.StatusOK)
+
 	}
 }
 
