@@ -1,26 +1,36 @@
 package product
 
 import (
+	"5-order-api-auth/configs"
 	"5-order-api-auth/pkg/middleware"
 	"5-order-api-auth/pkg/req"
 	"5-order-api-auth/pkg/res"
+	"fmt"
 	"net/http"
 	"strconv"
 )
 
 type productsHandler struct {
 	ProductRepository *ProductRepository
+	Config            *configs.Config
 }
 
 type ProductHandlerDeps struct {
 	ProductRepository *ProductRepository
+	Config            *configs.Config
 }
 
 func ProductsHandler(router *http.ServeMux, deps ProductHandlerDeps) {
+
+	handler := &productsHandler{
+		ProductRepository: deps.ProductRepository,
+		Config:            deps.Config,
+	}
+	authDeps := middleware.AuthDeps{Config: deps.Config}
+	fmt.Println("ProductsHandler", deps.Config)
 	stack := middleware.Chain(
-		middleware.IsAuthed,
+		authDeps.IsAuthed,
 	)
-	handler := &productsHandler{ProductRepository: deps.ProductRepository}
 	router.Handle("POST /product", stack(handler.Create()))
 	router.Handle("PATCH /product/{id}", stack(handler.Update()))
 	router.Handle("DELETE /product/{id}", stack(handler.Delete()))

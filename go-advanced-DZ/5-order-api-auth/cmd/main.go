@@ -26,7 +26,10 @@ func main() {
 	//Services
 	AuthService := auth.NewAuthService(phoneAuthRepository)
 
-	product.ProductsHandler(router, product.ProductHandlerDeps{ProductRepository: productRepository})
+	product.ProductsHandler(router, product.ProductHandlerDeps{
+		ProductRepository: productRepository,
+		Config:            conf,
+	})
 
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config:      conf,
