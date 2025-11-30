@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"5-order-api-auth/pkg/db"
+	"6-order-api-cart/pkg/db"
 
 	"gorm.io/gorm/clause"
 )

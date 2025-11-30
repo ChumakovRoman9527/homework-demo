@@ -2,11 +2,11 @@ package main
 
 import (
 	// "6-Architecture/configs"
-	"5-order-api-auth/configs"
-	"5-order-api-auth/internal/auth"
-	"5-order-api-auth/internal/product"
-	"5-order-api-auth/pkg/db"
-	"5-order-api-auth/pkg/middleware"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/internal/auth"
+	"6-order-api-cart/internal/product"
+	"6-order-api-cart/pkg/db"
+	"6-order-api-cart/pkg/middleware"
 	"fmt"
 	"log"
 	"net/http"

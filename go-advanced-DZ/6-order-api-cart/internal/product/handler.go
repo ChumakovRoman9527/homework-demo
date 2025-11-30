@@ -1,10 +1,10 @@
 package product
 
 import (
-	"5-order-api-auth/configs"
-	"5-order-api-auth/pkg/middleware"
-	"5-order-api-auth/pkg/req"
-	"5-order-api-auth/pkg/res"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/pkg/middleware"
+	"6-order-api-cart/pkg/req"
+	"6-order-api-cart/pkg/res"
 	"fmt"
 	"net/http"
 	"strconv"
