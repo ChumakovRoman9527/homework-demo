@@ -44,6 +44,7 @@ func (authDeps AuthDeps) IsAuthed(next http.Handler) http.Handler {
 			writeUnAuthed(w)
 			return
 		}
+		fmt.Println("data from token !", data)
 		ctx := context.WithValue(r.Context(), ConstPhoneKey, data.Phone)
 		req := r.WithContext(ctx)
 

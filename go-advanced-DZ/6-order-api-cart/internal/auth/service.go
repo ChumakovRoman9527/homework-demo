@@ -68,10 +68,10 @@ func (service AuthService) CodeCheck(sessionId string, code string) (string, err
 
 func (service AuthService) ClearOldSession(sessionId string) error {
 
-	_, err := service.UserRepository.DeleteBySessionCode(sessionId)
-	if err != nil {
-		return err
-	}
+	// _, err := service.UserRepository.DeleteBySessionCode(sessionId)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

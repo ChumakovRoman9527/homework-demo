@@ -3,6 +3,7 @@ package main
 import (
 	"6-order-api-cart/internal/auth"
 	"6-order-api-cart/internal/link"
+	"6-order-api-cart/internal/orders"
 	"6-order-api-cart/internal/product"
 	"os"
 
@@ -20,7 +21,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&link.Link{}, &product.Product{}, &auth.PhoneAuth{})
+	err = db.AutoMigrate(&link.Link{}, &product.Product{}, &auth.PhoneAuth{}, orders.Order{}, orders.OrderDetails{})
 	if err != nil {
 		panic(err)
 	}

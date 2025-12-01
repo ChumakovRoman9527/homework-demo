@@ -5,7 +5,6 @@ import (
 	"6-order-api-cart/pkg/middleware"
 	"6-order-api-cart/pkg/req"
 	"6-order-api-cart/pkg/res"
-	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -27,7 +26,7 @@ func ProductsHandler(router *http.ServeMux, deps ProductHandlerDeps) {
 		Config:            deps.Config,
 	}
 	authDeps := middleware.AuthDeps{Config: deps.Config}
-	fmt.Println("ProductsHandler", deps.Config)
+
 	stack := middleware.Chain(
 		authDeps.IsAuthed,
 	)
