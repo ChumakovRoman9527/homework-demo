@@ -37,13 +37,13 @@ func (handler *authHandler) LoginPhone() http.HandlerFunc {
 		if err != nil {
 			return
 		}
-		fmt.Println(body.Phone)
+
 		sessionId, err := handler.AuthService.SessionGenerate(body.Phone)
 		if err != nil {
 			res.Json(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-		fmt.Println(sessionId)
+
 		data := LoginPhoneResponse{
 			SessionID: sessionId,
 		}

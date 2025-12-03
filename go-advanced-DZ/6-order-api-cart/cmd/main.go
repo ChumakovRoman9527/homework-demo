@@ -6,6 +6,7 @@ import (
 	"6-order-api-cart/internal/auth"
 	"6-order-api-cart/internal/orders"
 	"6-order-api-cart/internal/product"
+	"6-order-api-cart/internal/user"
 	"6-order-api-cart/pkg/db"
 	"6-order-api-cart/pkg/middleware"
 	"fmt"
@@ -25,8 +26,9 @@ func main() {
 	productRepository := product.NewProductRepository(db)
 	phoneAuthRepository := auth.NewPhoneAuthRepository(db)
 	orderRepository := orders.NewOrderRepository(db)
+	userRepository := user.NewUserRepository(db)
 	//Services
-	AuthService := auth.NewAuthService(phoneAuthRepository)
+	AuthService := auth.NewAuthService(phoneAuthRepository, userRepository)
 
 	product.ProductsHandler(router, product.ProductHandlerDeps{
 		ProductRepository: productRepository,

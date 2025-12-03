@@ -5,6 +5,7 @@ import (
 	"6-order-api-cart/internal/link"
 	"6-order-api-cart/internal/orders"
 	"6-order-api-cart/internal/product"
+	"6-order-api-cart/internal/user"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -21,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&link.Link{}, &product.Product{}, &auth.PhoneAuth{}, orders.Order{}, orders.OrderDetails{})
+	err = db.AutoMigrate(&link.Link{}, &product.Product{}, &auth.PhoneAuth{}, orders.Order{}, orders.OrderDetails{}, user.User{})
 	if err != nil {
 		panic(err)
 	}

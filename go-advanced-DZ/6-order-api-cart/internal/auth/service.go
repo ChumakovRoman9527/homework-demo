@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"6-order-api-cart/internal/user"
 	"errors"
 	"math/rand"
 	"strconv"
@@ -9,11 +10,12 @@ import (
 )
 
 type AuthService struct {
-	UserRepository *PhoneAuthRepository
+	PhoneAuthRepository *PhoneAuthRepository
+	UserRepository      *user.UserRepository
 }
 
-func NewAuthService(authRepository *PhoneAuthRepository) *AuthService {
-	return &AuthService{UserRepository: authRepository}
+func NewAuthService(authRepository *PhoneAuthRepository, userRepository *user.UserRepository) *AuthService {
+	return &AuthService{PhoneAuthRepository: authRepository, UserRepository: userRepository}
 }
 
 const codeLen = 4
@@ -40,13 +42,22 @@ func (service AuthService) SessionGenerate(phone string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	/*Вот здесь попытка создать пользователя по номеру телефона*/
+	user_id, err := service.UserRepository.GetIdByPhone(phone)
+	if err != nil {
+		return "", err
+	}
+	/*Вот здесь попытка создать пользователя по номеру телефона*/
+
 	newAuthfromReq := &PhoneAuth{
 		SessionID: string(sessionId),
 		Code:      code,
 		Phone:     phone,
+		UserId:    uint(user_id),
 	}
 
-	newAuth, err := service.UserRepository.Create(newAuthfromReq)
+	newAuth, err := service.PhoneAuthRepository.Create(newAuthfromReq)
 	if err != nil {
 		return "", err
 	}
@@ -56,7 +67,7 @@ func (service AuthService) SessionGenerate(phone string) (string, error) {
 
 func (service AuthService) CodeCheck(sessionId string, code string) (string, error) {
 
-	existed, err := service.UserRepository.GetBySessionCode(sessionId, code)
+	existed, err := service.PhoneAuthRepository.GetBySessionCode(sessionId, code)
 	if err != nil {
 		return "", err
 	}
