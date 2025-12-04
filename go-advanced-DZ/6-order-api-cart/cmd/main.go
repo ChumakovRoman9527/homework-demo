@@ -43,6 +43,7 @@ func main() {
 	orders.OrderHandler(router, orders.OrderHandlerDeps{
 		OrderRepository: orderRepository,
 		Config:          conf,
+		UserRepository:  userRepository,
 	})
 
 	stack := middleware.Chain(

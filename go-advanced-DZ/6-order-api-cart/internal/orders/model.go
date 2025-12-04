@@ -13,6 +13,7 @@ type Order struct {
 	// PhoneAuthID uint           `gorm:"index;not null"` // Foreign key
 	// PhoneAuth   auth.PhoneAuth `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	UserPhone   string `json:"phone" gorm:"index"`
+	UserID      int    `json:"user_Id" gorm:"index"`
 	OrderStatus string `json:"status"`
 	//	OrderAddress string         `json:"address"` это свойство пользователя все таки и это свойство доставки а не заказа, одна доставка - множество заказов, и их может быть много !
 	Items []OrderDetails `gorm:"foreignKey:OrderID;references:ID"`
