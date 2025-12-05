@@ -3,6 +3,10 @@ package orders
 import "6-order-api-cart/internal/product"
 
 type CreateOrderRequest struct {
+	Items []ItemOrder `json:"items"`
+}
+
+type ItemOrder struct {
 	ProductID int `json:"product_id"`
 	Quantity  int `json:"quantity"`
 }
@@ -15,7 +19,8 @@ type GetOrderResponse struct {
 }
 
 type ProductResponse struct {
-	product.Product
+	product.Product `json:"product"`
+	Quantity        int `json:"quantity"`
 }
 
 type Orders struct {
