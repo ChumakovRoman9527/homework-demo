@@ -55,7 +55,17 @@ func (handler *orderHandler) getUser(w http.ResponseWriter, r *http.Request) (ph
 
 func (handler *orderHandler) GetUserOrders() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		_, UserId, err := handler.getUser(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		Orders, err := handler.OrderRepository.GetUserOrders(uint64(UserId))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		res.Json(w, Orders, http.StatusOK)
 	}
 }
 
@@ -68,7 +78,12 @@ func (handler *orderHandler) GetOrder() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
+		Order, err := handler.OrderRepository.GetOrder(id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		res.Json(w, Order, http.StatusOK)
 	}
 }
 func (handler *orderHandler) CreateOrder() http.HandlerFunc {

@@ -3,7 +3,6 @@ package orders
 import (
 	"6-order-api-cart/internal/product"
 	"6-order-api-cart/pkg/db"
-	"fmt"
 )
 
 type OrderRepositoryDeps struct {
@@ -56,26 +55,44 @@ func (repo *OrderRepository) CreateOrder(UserID int, phone string, newOrder Crea
 	return NewDBOrder, nil
 }
 
-func (repo *OrderRepository) GetOrder(OrderId int) (GetOrderResponse, error) {
+func (repo *OrderRepository) GetOrder(OrderId uint64) (GetOrderResponse, error) {
 	var OrderDB Order
 	var Order GetOrderResponse
-	var OrderItems []ProductResponse
+	var OrderItems []OrderDetails
 
 	// var product product.Product
 
 	repo.DataBase.Find(&OrderDB, OrderId)
 	Order.OrderID = int(OrderDB.ID)
-	Order.Created_At = OrderDB.CreatedAt.Format("yyyy-MM-dd")
+	Order.Created_At = OrderDB.CreatedAt.Format("2006-01-02 15:04:05")
 	Order.OrderStatus = OrderDB.OrderStatus
 
-	for _, value := range OrderDB.Items {
-		OrderItems = append(OrderItems, ProductResponse{
-			Product: product.Product{},
-			//Product:  product.ProductRepository.GetByID(value.ProductID),
-			Quantity: value.Quantity,
-		})
-		fmt.Println(value.ProductID)
+	repo.DataBase.Find(&OrderItems, "order_id = ?", OrderId)
+
+	for _, value := range OrderItems { //можно попробовать паралелить запросы к БД
+		var product product.Product
+		var orderProduct ProductResponse
+		repo.DataBase.Find(&product, "id=?", value.ProductID)
+		//product = product.Product.GetByID(value.ID)
+		orderProduct = ProductResponse{Quantity: value.Quantity,
+			Product: product}
+
+		Order.Products = append(Order.Products, orderProduct)
 	}
 
 	return Order, nil
+}
+
+func (repo *OrderRepository) GetUserOrders(UserID uint64) (Orders, error) {
+	var OrderDB []Order
+	var UserOrders Orders
+	repo.DataBase.Find(&OrderDB, "user_id = ? ", UserID)
+	for _, order := range OrderDB { //можно попробовать паралелить запросы к БД
+		var Order GetOrderResponse
+		Order, _ = repo.GetOrder(uint64(order.ID))
+
+		UserOrders.Orders = append(UserOrders.Orders, Order)
+	}
+
+	return UserOrders, nil
 }
