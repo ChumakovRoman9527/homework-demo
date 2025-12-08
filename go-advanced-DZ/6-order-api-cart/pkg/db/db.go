@@ -1,7 +1,7 @@
 package db
 
 import (
-	"5-order-api-auth/configs"
+	"6-order-api-cart/configs"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

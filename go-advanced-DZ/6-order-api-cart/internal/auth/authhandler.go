@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"5-order-api-auth/configs"
-	"5-order-api-auth/pkg/jwt"
-	"5-order-api-auth/pkg/req"
-	"5-order-api-auth/pkg/res"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/pkg/jwt"
+	"6-order-api-cart/pkg/req"
+	"6-order-api-cart/pkg/res"
 	"fmt"
 	"net/http"
 )
@@ -37,13 +37,13 @@ func (handler *authHandler) LoginPhone() http.HandlerFunc {
 		if err != nil {
 			return
 		}
-		fmt.Println(body.Phone)
+
 		sessionId, err := handler.AuthService.SessionGenerate(body.Phone)
 		if err != nil {
 			res.Json(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-		fmt.Println(sessionId)
+
 		data := LoginPhoneResponse{
 			SessionID: sessionId,
 		}

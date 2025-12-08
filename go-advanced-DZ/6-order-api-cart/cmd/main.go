@@ -2,11 +2,13 @@ package main
 
 import (
 	// "6-Architecture/configs"
-	"5-order-api-auth/configs"
-	"5-order-api-auth/internal/auth"
-	"5-order-api-auth/internal/product"
-	"5-order-api-auth/pkg/db"
-	"5-order-api-auth/pkg/middleware"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/internal/auth"
+	"6-order-api-cart/internal/orders"
+	"6-order-api-cart/internal/product"
+	"6-order-api-cart/internal/user"
+	"6-order-api-cart/pkg/db"
+	"6-order-api-cart/pkg/middleware"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,8 +25,10 @@ func main() {
 
 	productRepository := product.NewProductRepository(db)
 	phoneAuthRepository := auth.NewPhoneAuthRepository(db)
+	orderRepository := orders.NewOrderRepository(db)
+	userRepository := user.NewUserRepository(db)
 	//Services
-	AuthService := auth.NewAuthService(phoneAuthRepository)
+	AuthService := auth.NewAuthService(phoneAuthRepository, userRepository)
 
 	product.ProductsHandler(router, product.ProductHandlerDeps{
 		ProductRepository: productRepository,
@@ -34,6 +38,12 @@ func main() {
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config:      conf,
 		AuthService: AuthService,
+	})
+
+	orders.OrderHandler(router, orders.OrderHandlerDeps{
+		OrderRepository: orderRepository,
+		Config:          conf,
+		UserRepository:  userRepository,
 	})
 
 	stack := middleware.Chain(

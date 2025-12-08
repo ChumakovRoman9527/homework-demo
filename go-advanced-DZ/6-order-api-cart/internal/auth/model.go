@@ -7,6 +7,7 @@ import (
 type PhoneAuth struct {
 	gorm.Model
 	Phone     string
+	UserId    uint
 	SessionID string
 	Code      string
 }

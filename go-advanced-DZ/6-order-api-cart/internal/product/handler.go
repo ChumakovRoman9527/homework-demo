@@ -1,11 +1,10 @@
 package product
 
 import (
-	"5-order-api-auth/configs"
-	"5-order-api-auth/pkg/middleware"
-	"5-order-api-auth/pkg/req"
-	"5-order-api-auth/pkg/res"
-	"fmt"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/pkg/middleware"
+	"6-order-api-cart/pkg/req"
+	"6-order-api-cart/pkg/res"
 	"net/http"
 	"strconv"
 )
@@ -27,7 +26,7 @@ func ProductsHandler(router *http.ServeMux, deps ProductHandlerDeps) {
 		Config:            deps.Config,
 	}
 	authDeps := middleware.AuthDeps{Config: deps.Config}
-	fmt.Println("ProductsHandler", deps.Config)
+
 	stack := middleware.Chain(
 		authDeps.IsAuthed,
 	)

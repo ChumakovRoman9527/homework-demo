@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"5-order-api-auth/configs"
-	"5-order-api-auth/pkg/jwt"
+	"6-order-api-cart/configs"
+	"6-order-api-cart/pkg/jwt"
 	"context"
 	"fmt"
 	"log"
@@ -44,6 +44,7 @@ func (authDeps AuthDeps) IsAuthed(next http.Handler) http.Handler {
 			writeUnAuthed(w)
 			return
 		}
+		fmt.Println("data from token !", data)
 		ctx := context.WithValue(r.Context(), ConstPhoneKey, data.Phone)
 		req := r.WithContext(ctx)
 
