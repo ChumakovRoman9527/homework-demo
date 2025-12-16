@@ -54,7 +54,7 @@ func removeData(db *gorm.DB) {
 	db.Unscoped().Where("phone = ?", "89123456789").Delete(&auth.PhoneAuth{})
 	db.Unscoped().Where("1 = ?", "1").Delete(&orders.OrderDetails{})
 	db.Unscoped().Where("1 = ?", "1").Delete(&orders.Order{})
-	db.Unscoped().Where("1 = ?", "1").Delete(&product.Product{})
+	// db.Unscoped().Where("1 = ?", "1").Delete(&product.Product{})
 }
 
 func TestOrderSuccess(t *testing.T) {
@@ -172,5 +172,10 @@ func TestOrderSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	fmt.Println(body)
+	var OrderResponse orders.GetOrderResponse
+
+	err = json.Unmarshal(body, &OrderResponse)
+	if err != nil {
+		t.Fatal(err)
+	}
 }
